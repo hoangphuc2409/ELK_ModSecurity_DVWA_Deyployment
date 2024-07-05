@@ -3,4 +3,16 @@
 ## Topology
 ## Triển khai
 ### 1. Cài đặt DVWA
+#### Tạo DVWA Apache website
+Truy cập vào thư mục `/var/www/html` chứa mã nguồn Apache Server và clone repo DVWA vào đây.
+```
+cd /var/www/html
+git clone https://github.com/digininja/DVWA.git
+```
+Thay đổi permission và khởi động `apache2` service
+```
+sudo chmod 777 DVWA
+sudo service apache2 start
+```
+Truy cập `http://127.0.0.1/` trên browser để kiểm tra kết quả, nếu xuất hiện hình ảnh này thì đã cài đặt thành công.
 ### 2. Cấu hình ModSecurity
