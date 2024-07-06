@@ -28,6 +28,8 @@ Truy cập vào file `config.inc.php` để thay đổi username và mật khẩ
 ```
 sudo nano config/config.inc.php
 ```
+![Alt text](Image/dvwa_user.jfif)
+
 Khởi động `mysql` service
 ```
 sudo service mysql start
@@ -52,5 +54,7 @@ Khởi động lại `apache2` service
 ```
 systemctl restart apache2
 ```
-Truy cập vào `http://127.0.0.1/DVWA` và đăng nhập bằng tài khoản đã tạo -> click Create/Reset Database. Cài đặt thành công sẽ có kết quả như hình bên dưới.
+Truy cập vào `http://127.0.0.1/DVWA` và đăng nhập bằng tài khoản đã tạo -> click `Create/Reset Database`. Cài đặt thành công sẽ có kết quả như hình bên dưới.
+
+![Alt text](Image/DVWA_successfully.jfif)
 ### 2. Cấu hình ModSecurity
