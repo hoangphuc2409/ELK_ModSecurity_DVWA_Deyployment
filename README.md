@@ -58,3 +58,62 @@ Truy cập vào `http://127.0.0.1/DVWA` và đăng nhập bằng tài khoản đ
 
 ![Alt text](Image/DVWA_successfully.jfif)
 ### 2. Cấu hình ModSecurity
+#### 2.1 Cài đặt ModSecurity
+```
+sudo apt install libapache2-mod-security2 -y
+```
+Sau khi đã cài đặt, bật Apache2 headers và khởi động lại Apache
+```
+sudo a2enmod headers
+sudo systemctl restart apache2
+```
+Sử dụng tệp cấu hình mặc định của Mod Security
+```
+sudo cp /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+```
+Mở file `/etc/modsecurity/modsecurity.conf` và thay đổi giá trị của `SecRuleEngine` thành `On`
+#### 2.2 Cài đặt The OWASP ModSecurity Core Rule Set
+Xóa bộ rule hiện tại của ModSecurity
+```
+sudo rm -rf /usr/share/modsecurity-crs
+```
+Clone Core Rule Set từ github và lưu vào tệp `/usr/share/modsecurity-crs`
+```
+sudo git clone https://github.com/coreruleset/coreruleset /usr/share/modsecurity-crs
+```
+Sử dụng `crs-setup.conf.example` làm file cấu hình
+```
+sudo cp /usr/share/modsecurity-crs/crs-setup.conf.example /usr/share/modsecurity-crs/crs-setup.conf
+sudo cp /usr/share/modsecurity-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example /usr/share/modsecurity-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+```
+#### 2.3 Kích hoạt ModSecurity trên Apache
+Chỉnh sửa file `/etc/apache2/mods-available/security2.conf` theo nội dung bên dưới:
+```
+<IfModule security2_module>
+        SecDataDir /var/cache/modsecurity
+        Include /usr/share/modsecurity-crs/crs-setup.conf
+        Include /usr/share/modsecurity-crs/rules/*.conf
+</IfModule>
+```
+Chỉnh sửa file `/etc/apache2/sites-enabled/000-default.conf` theo nội dung bên dưới:
+```
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        SecRuleEngine On
+</VirtualHost>
+```
+Khởi động lại Apache
+```
+systemctl restart apache2
+```
+#### 2.4 Kiểm tra hoạt động của ModSecurity
+Mở trình duyệt và truy cập `http://127.0.0.1/DVWA`. Chọn mục `DVWA Security`, chỉnh độ khó thành `Low` và nhấn `Submit`
+Tiếp theo, chọn một loại tấn công bất kỳ, ví dụ ở đây là `SQL Injection` và thực hiện tấn công
+Kết quả là tấn công đã bị Mod Security chặn
+
+
+
+
