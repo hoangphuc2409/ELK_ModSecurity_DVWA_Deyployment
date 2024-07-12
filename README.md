@@ -111,8 +111,16 @@ systemctl restart apache2
 ```
 #### 2.4 Kiểm tra hoạt động của ModSecurity
 Mở trình duyệt và truy cập `http://127.0.0.1/DVWA`. Chọn mục `DVWA Security`, chỉnh độ khó thành `Low` và nhấn `Submit`
+
+![Alt text](Image/dvwa_security.jfif)
+
 Tiếp theo, chọn một loại tấn công bất kỳ, ví dụ ở đây là `SQL Injection` và thực hiện tấn công
+
+![Alt text](Image/sqli.jfif)
+
 Kết quả là tấn công đã bị Mod Security chặn
+
+![Alt text](Image/result.jfif)
 
 
 
